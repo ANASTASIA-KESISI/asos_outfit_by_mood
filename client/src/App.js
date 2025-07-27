@@ -295,7 +295,7 @@ function App() {
                       </p>
                       {product.url && (
                         <a
-                          href={`https://asos.com${product.url}`}
+                          href={`https://asos.com/${product.url}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           style={{

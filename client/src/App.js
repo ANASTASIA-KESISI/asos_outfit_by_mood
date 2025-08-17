@@ -79,6 +79,13 @@ function App() {
     border: '1px solid rgba(255, 255, 255, 0.3)'
   };
 
+  const transformTitle = (str) => {
+    const words = str.split(" ");
+    words.shift(); // remove first word
+    words[0] = words[0].charAt(0).toUpperCase() + words[0].slice(1); // capitalize first letter
+    return words.join(" ");
+  }
+
   return (
     <div style={containerStyle}>
       {/* Decorative elements */}
@@ -223,8 +230,8 @@ function App() {
                     <div style={{position: 'relative', overflow: 'hidden'}}>
                       {product.imageUrl ? (
                         <img
-                          src={product.imageUrl}
-                          alt={product.name || 'Product'}
+                          src={"https://" + product.imageUrl}
+                          alt={transformTitle(product.name) || 'Product'}
                           style={{
                             width: '100%',
                             height: '300px',
@@ -236,7 +243,7 @@ function App() {
                           }}
                           onError={(e) => {
                             console.log('Image failed to load:', product.imageUrl);
-                            console.log('Error details:', e);
+                            console.log('Error details:', e.message);
                             e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImEiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNmOWE4ZDQiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmNDcyYjYiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2EpIi8+PHRleHQgeD0iNTAlIiB5PSI0NSUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhIiBmb250LXNpemU9IjE2IiBmaWxsPSIjZmZmZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5JbWFnZSBGYWlsZWQ8L3RleHQ+PHRleHQgeD0iNTAlIiB5PSI2MCUiIGZvbnQtZmFtaWx5PSJHZW9yZ2lhIiBmb250LXNpemU9IjI0IiBmaWxsPSIjZmZmZmZmIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7wn5GOPC90ZXh0Pjwvc3ZnPg==';
                           }}
                         />
@@ -266,7 +273,7 @@ function App() {
                         fontFamily: 'Georgia, serif',
                         lineHeight: '1.4'
                       }}>
-                        {product.name || 'Gorgeous Product'}
+                        {transformTitle(product.name) || 'Gorgeous Product'}
                       </h3>
                       <p style={{
                         fontSize: '24px',
@@ -283,7 +290,7 @@ function App() {
                             // Handle ASOS price object structure
                             const priceObj = product.price;
                             if (priceObj.current) {
-                              return `${priceObj.currency || ''}${priceObj.current}`;
+                              return `${priceObj.currency || ''}${priceObj.current.text}`;
                             }
                             if (priceObj.rrp) {
                               return `${priceObj.currency || ''}${priceObj.rrp}`;
@@ -295,7 +302,7 @@ function App() {
                       </p>
                       {product.url && (
                         <a
-                          href={`https://asos.com${product.url}`}
+                          href={`https://asos.com${product.url}`.replace(/\.com([^/])/, ".com/$1")}
                           target="_blank"
                           rel="noopener noreferrer"
                           style={{
